@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+# This script is used to build the project.
+DOCKER_IMAGE="b00gizm/heat-it"
+DOCKER_TAG="${DOCKER_TAG:-latest}"
+
+docker build -t "${DOCKER_IMAGE}" .
+docker tag "${DOCKER_IMAGE}" "${DOCKER_IMAGE}:${DOCKER_TAG}"

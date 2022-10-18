@@ -1,0 +1,39 @@
+version: '3.9'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: dev
+    container_name: app
+    command: yarn start:debug
+    env_file:
+      - .env
+    ports:
+      - 3000:3000
+      - 9229:9229
+    volumes:
+      - .:/workspace
+      - /workspace/node_modules
+    networks:
+      - heat-it
+
+  mosquitto:
+    image: eclipse-mosquitto:2
+    container_name: mosquitto
+    restart: always
+    ports:
+      - 1883:1883
+      - 9001:9001
+    volumes:
+      - .docker/mosquitto/config:/mosquitto/config
+      - .docker/mosquitto/data:/mosquitto/data
+      - .docker/mosquitto/log:/mosquitto/log
+    networks:
+      - heat-it
+
+networks:
+  heat-it:
+    name: heat-it
+    driver: bridge
